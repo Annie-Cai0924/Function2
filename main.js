@@ -225,16 +225,19 @@ function createBackgroundStars(container) {
 }
 
 //This line of code creates a new div element that represents a star. We added the class star mood-star to it
+//A record of a user's emotions and container is The container that holds all the stars
 function createMoodStar(entry, container) {
+
     const star = document.createElement('div');
     star.className = 'star mood-star';
-    
+   // https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/style
     // Calculate position
     const totalDuration = Date.now() - (moodEntries.length > 0 ? moodEntries[0].timestamp : Date.now());
     const entryAge = Date.now() - entry.timestamp;
     const ageRatio = totalDuration > 0 ? entryAge / totalDuration : 0;
     
     // Add randomness
+    //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
     const randomOffsetX = Math.random() * 60 - 30; 
     const randomOffsetY = Math.random() * 60 - 30;
     
