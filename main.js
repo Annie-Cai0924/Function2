@@ -37,6 +37,9 @@ function initApp() {
     // Add resize listener
     //When the user resizes the browser window, we resize the page layout
     window.addEventListener('resize', handleResize);
+        // Initialize background animation
+        initAnimation();
+    
 }
 
 //https://developer.mozilla.org/en-US/docs/Web/API/Document/createElement
@@ -447,14 +450,7 @@ function handleResize() {
             p1.closest = closest;
         }
 
-        // assign a circle to each point
-        //Traverse every point
-        for(var i in points) {
-            //Create a new Circle using the constructor "circle". The radius is random between 2 and 4
-            //The color is semi-transparent white 'rgba(255,255,255,0.3)', giving the stars a slightly soft feel
-            var c = new Circle(points[i], 2+Math.random()*2, 'rgba(255,255,255,0.3)');
-            points[i].circle = c;
-        }
+
         
         // Start animation
         animate();
@@ -463,19 +459,26 @@ function handleResize() {
         }
         
         // Add event listeners
+        //If this device is not a touchscreen (for example, not a mobile phone or a tablet), then listen for mouse movement events
         if(!('ontouchstart' in window)) {
+            //Listen for it as well when the page is scrolling
             window.addEventListener('mousemove', mouseMove);
         }
         window.addEventListener('scroll', scrollCheck);
+        //When the window size changes (for example, when the user enlarges or reduces the window), readjust the canvas size
         window.addEventListener('resize', resize);
     }
 
+    //This is to define a function named mouseMove, which will be called when the mouse moves
     function mouseMove(e) {
+        //First, declare two variables, posx and posy, to store the current position of the mouse. The initial value is set to 0 first
         var posx = posy = 0;
+        //Determine whether the browser supports pageX and pageY
         if (e.pageX || e.pageY) {
             posx = e.pageX;
             posy = e.pageY;
         }
+        //If pageX/Y is not supported, use clientX/Y plus the page scrolling distance
         else if (e.clientX || e.clientY)    {
             posx = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
             posy = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
@@ -484,11 +487,12 @@ function handleResize() {
         target.y = posy;
     }
 
+        //The function's role is to check if you have slid down the page. If you have slid too much, stop the animation
     function scrollCheck() {
         if(document.body.scrollTop > height) animateHeader = false;
         else animateHeader = true;
     }
-
+    //This function will be triggered when you "adjust the size of the browser window", with the aim of making the canvas size adapt to the new window size in real time
     function resize() {
         width = window.innerWidth;
         height = window.innerHeight;
@@ -496,11 +500,16 @@ function handleResize() {
         canvas.height = height;
     }
 
+    //This function is a "loop" that constantly refreshes the picture to create an animation effect
     function animate() {
         if(animateHeader) {
+            //If we haven't slid too many pages before (the animateHeader is true), the animation continues
             ctx.clearRect(0,0,width,height);
+            //Clear the entire canvas and draw new content for the next frame
             for(var i in points) {
-                // detect points in range
+            // detect points in range
+             //If the mouse is very close to this point (less than 4000 away from it), then this point will "shine a little brighter". 
+            //The closer it is, the brighter it gets; the farther it is, the darker it gets. Beyond a certain distance, it loses its brightness. "active" determines the transparency of the line, while "circle.active" determines the transparency of the circle
                 if(Math.abs(getDistance(target, points[i])) < 4000) {
                     points[i].active = 0.3;
                     points[i].circle.active = 0.6;
@@ -514,22 +523,30 @@ function handleResize() {
                     points[i].active = 0;
                     points[i].circle.active = 0;
                 }
-
+                //Draw lines from the current point to its "nearest few points"
                 drawLines(points[i]);
+                //Draw a small circle of this point itself
                 points[i].circle.draw();
             }
         }
+        //Use the animation again
         requestAnimationFrame(animate);
     }
 
     function shiftPoint(p) {
-        TweenLite.to(p, 1+1*Math.random(), {x:p.originX-50+Math.random()*100,
+        //Use TweenLite (an animation library) to make point p move over a period of time
+        TweenLite.to(p, 1+1*Math.random(), 
+        //The point will move to a random position that deviates from the original position by ±50 pixels. 
+    //originX is the very beginning position of this point. 
+    //In this way, the point won't run too far away and will just wander around the area where it is
+        {x:p.originX-50+Math.random()*100,
             y: p.originY-50+Math.random()*100, ease:Circ.easeInOut,
+            //After the animation ends (the point floats to a new position), shiftPoint(p) is called again to continue moving
             onComplete: function() {
                 shiftPoint(p);
             }});
     }
-
+    //The "circular acceleration and deceleration" animation effect like Circ.easeInOut makes the movement process look more natural and gentle, unlike the stiffness of linear animation
     function drawLines(p) {
         if(!p.active) return;
         for(var i in p.closest) {
@@ -541,27 +558,38 @@ function handleResize() {
         }
     }
 
+    //This function is used to create an object of a "Circle". Each point (point) will have a corresponding small circle (Circle), which can be drawn. Moreover, it becomes brighter when approaching the mouse and more transparent when moving away
     function Circle(pos,rad,color) {
         var _this = this;
 
         // constructor
         (function() {
+            //It is a common way of writing, for the convenience of accessing the current circular object within the function
             _this.pos = pos || null;
             _this.radius = rad || null;
             _this.color = color || null;
         })();
-
+        //A method of "drawing oneself" was defined for each Circle
         this.draw = function() {
+            //If this circle is not in an active state now, don't draw it. Just skip it
             if(!_this.active) return;
             ctx.beginPath();
+            //a complete circle
             ctx.arc(_this.pos.x, _this.pos.y, _this.radius, 0, 2 * Math.PI, false);
+            //Set the color of the circle. Here, light blue is used
             ctx.fillStyle = 'rgba(156,217,249,'+ _this.active+')';
+            //Finally, fill this circle
             ctx.fill();
         };
     }
 
     // Util
+    //This is to define a function named "getDistance", which means "obtain distance"
     function getDistance(p1, p2) {
+    //In fact, it is to calculate the square of the distance using the Pythagorean theorem: 
+ 
+    //The distance between two points 
+    //= √((x1 - x2)² + (y1 - y2)²)
         return Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2);
     }
     
