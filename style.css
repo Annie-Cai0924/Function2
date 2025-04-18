@@ -30,6 +30,19 @@ body {
     max-width: 1000px;
     margin: 0 auto;
     padding: 20px;
+    position: relative;
+    z-index: 10;
+}
+
+/* Canvas 背景 */
+#demo-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none; 
 }
 
 h1, h2, h3 {
@@ -208,4 +221,96 @@ footer {
         padding: 15px 0;
         font-size: 0.8rem;
     }
+}
+
+/* Also fromhttps://codepen.io/micobytes/pen/aZjXxY */
+.large-header {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    background-color: rgb(1, 11, 33);
+    overflow: hidden;
+    background-size: cover;
+    background-position: center center;
+    z-index: 1;
+}
+
+.star {
+    position: absolute;
+    background-color: #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+}
+
+.background-star {
+    z-index: 2;
+}
+
+.mood-star {
+    z-index: 3;
+}
+
+@keyframes twinkle {
+    0% { opacity: 0.2; }
+    50% { opacity: 0.8; }
+    100% { opacity: 0.2; }
+}
+
+/* css */
+/* Header */
+.large-header {
+	position: relative;
+	width: 100%;
+	background: #333;
+	overflow: hidden;
+	background-size: cover;
+	background-position: center center;
+	z-index: 1;
+}
+
+#large-header {
+	background-image: url('https://www.marcoguglie.it/Codepen/AnimatedHeaderBg/demo-1/img/demo-1-bg.jpg');
+}
+
+.main-title {
+	position: absolute;
+	margin: 0;
+	padding: 0;
+	color: #f9f1e9;
+	text-align: center;
+	top: 50%;
+	left: 50%;
+	-webkit-transform: translate3d(-50%,-50%,0);
+	transform: translate3d(-50%,-50%,0);
+}
+
+#horoscope{
+	color: black;
+	text-align: center;
+}
+
+#btn{
+	background-color: grey;
+	margin-top: 15px;
+	margin-bottom: 30px;
+}
+
+#symbols{
+	margin-bottom: -20px;
+}
+
+.demo-1 .main-title {
+	text-transform: uppercase;
+	font-size: 4.2em;
+	letter-spacing: 0.1em;
+}
+
+.main-title .thin {
+	font-weight: 200;
+}
+
+@media only screen and (max-width : 768px) {
+	.demo-1 .main-title {
+		font-size: 3em;
+	}
 }

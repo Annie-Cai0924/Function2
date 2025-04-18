@@ -6,6 +6,7 @@ let selectedEmotion = null;
 //I defined a variable called moodEntries to hold the "previously saved mood record". 
 //It loads the data by calling a function loadMoodEntries()
 let moodEntries = loadMoodEntries();
+let currentPage = 'mood-page';
 
 // Initialize application
 document.addEventListener('DOMContentLoaded', () => {
@@ -367,3 +368,204 @@ function handleResize() {
         renderStarChart();
     }
 }
+
+//From https://codepen.io/micobytes/pen/aZjXxY
+//I want to use this as my background because I like this style. I enjoy the animation following the mouse, which makes me feel as if I'm thinking, analyzing, and interacting with the user
+// Use it as Background
+(function() {
+    var width, height, largeHeader, canvas, ctx, points, target, animateHeader = true;
+
+    // Main
+    //This code is writing a function called initAnimation, which means "initializing the animation", that is, some basic Settings needed to prepare the animation
+    function initAnimation() {
+        //Take the width of the browser window and store it in the variable "width"
+        width = window.innerWidth;
+        //This line is to bring the height of the browser window into "height"
+        height = window.innerHeight;
+        //to set a "target point" right in the middle of the screen, that is, at half the width and height
+        target = {x: width/2, y: height/2};
+
+        // find <canvas> on the web page and set its width and height properly
+        canvas = document.getElementById('demo-canvas');
+        //Set the size of this canvas to the width and height of the browser I just obtained
+        canvas.width = width;
+        canvas.height = height;
+        //After obtaining the 2D drawing tool (context) on the canvas, we can use this ctx to draw lines, circles, text
+        ctx = canvas.getContext('2d');
+
+        // create points
+        //Create an empty array called "points" specifically for holding these points
+        points = [];
+        //These two loops are designed to "lay a dot matrix" across the entire canvas, generating a dot at regular intervals
+        for(var x = 0; x < width; x = x + width/20) {
+            for(var y = 0; y < height; y = y + height/20) {
+        //Add a little randomness to this point to prevent them from being too neat
+                var px = x + Math.random()*width/20;
+                var py = y + Math.random()*height/20;
+         //Each point, in addition to its current x and y coordinates, also stores its "original position", which makes it convenient for the point to move around and return to its original position later
+                var p = {x: px, originX: px, y: py, originY: py };
+                //Put this point object into the points array for storage
+                points.push(p);
+            }
+        }
+
+        // for each point find the 5 closest points
+        for(var i = 0; i < points.length; i++) {
+        //Prepare an empty array closest for the current point p1. Later, it will be used to hold the five points closest to it
+            var closest = [];
+            var p1 = points[i];
+        //Now take out all the other points and compare them one by one with p1
+            for(var j = 0; j < points.length; j++) {
+                var p2 = points[j]
+        //As long as it's not oneself, make the subsequent judgment
+                if(!(p1 == p2)) {
+        //There are a total of 5 points to be placed in closest. If the current KTH position is empty, first insert the current point p2
+                    var placed = false;
+                    for(var k = 0; k < 5; k++) {
+                        if(!placed) {
+                            if(closest[k] == undefined) {
+                                closest[k] = p2;
+                                placed = true;
+                            }
+                        }
+                    }
+          //Check if any of these five "temporary nearest points" is farther from p1 than the current point p2
+                    for(var k = 0; k < 5; k++) {
+                        //If this p2 hasn't been put into closest yet, then let's see if we need to replace it with a farther point
+                        if(!placed) {
+                            //If the current point p2 is closer to p1 than closest[k], then update
+                            if(getDistance(p1, p2) < getDistance(p1, closest[k])) {
+                                //Substitute the closer point in
+                                closest[k] = p2;
+                        //Mark it. The position has been found. There's no need to keep changing
+                                placed = true;
+                            }
+                        }
+                    }
+                }
+            }
+            p1.closest = closest;
+        }
+
+        // assign a circle to each point
+        //Traverse every point
+        for(var i in points) {
+            //Create a new Circle using the constructor "circle". The radius is random between 2 and 4
+            //The color is semi-transparent white 'rgba(255,255,255,0.3)', giving the stars a slightly soft feel
+            var c = new Circle(points[i], 2+Math.random()*2, 'rgba(255,255,255,0.3)');
+            points[i].circle = c;
+        }
+        
+        // Start animation
+        animate();
+        for(var i in points) {
+            shiftPoint(points[i]);
+        }
+        
+        // Add event listeners
+        if(!('ontouchstart' in window)) {
+            window.addEventListener('mousemove', mouseMove);
+        }
+        window.addEventListener('scroll', scrollCheck);
+        window.addEventListener('resize', resize);
+    }
+
+    function mouseMove(e) {
+        var posx = posy = 0;
+        if (e.pageX || e.pageY) {
+            posx = e.pageX;
+            posy = e.pageY;
+        }
+        else if (e.clientX || e.clientY)    {
+            posx = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
+            posy = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
+        }
+        target.x = posx;
+        target.y = posy;
+    }
+
+    function scrollCheck() {
+        if(document.body.scrollTop > height) animateHeader = false;
+        else animateHeader = true;
+    }
+
+    function resize() {
+        width = window.innerWidth;
+        height = window.innerHeight;
+        canvas.width = width;
+        canvas.height = height;
+    }
+
+    function animate() {
+        if(animateHeader) {
+            ctx.clearRect(0,0,width,height);
+            for(var i in points) {
+                // detect points in range
+                if(Math.abs(getDistance(target, points[i])) < 4000) {
+                    points[i].active = 0.3;
+                    points[i].circle.active = 0.6;
+                } else if(Math.abs(getDistance(target, points[i])) < 20000) {
+                    points[i].active = 0.1;
+                    points[i].circle.active = 0.3;
+                } else if(Math.abs(getDistance(target, points[i])) < 40000) {
+                    points[i].active = 0.02;
+                    points[i].circle.active = 0.1;
+                } else {
+                    points[i].active = 0;
+                    points[i].circle.active = 0;
+                }
+
+                drawLines(points[i]);
+                points[i].circle.draw();
+            }
+        }
+        requestAnimationFrame(animate);
+    }
+
+    function shiftPoint(p) {
+        TweenLite.to(p, 1+1*Math.random(), {x:p.originX-50+Math.random()*100,
+            y: p.originY-50+Math.random()*100, ease:Circ.easeInOut,
+            onComplete: function() {
+                shiftPoint(p);
+            }});
+    }
+
+    function drawLines(p) {
+        if(!p.active) return;
+        for(var i in p.closest) {
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(p.closest[i].x, p.closest[i].y);
+            ctx.strokeStyle = 'rgba(156,217,249,'+ p.active+')';
+            ctx.stroke();
+        }
+    }
+
+    function Circle(pos,rad,color) {
+        var _this = this;
+
+        // constructor
+        (function() {
+            _this.pos = pos || null;
+            _this.radius = rad || null;
+            _this.color = color || null;
+        })();
+
+        this.draw = function() {
+            if(!_this.active) return;
+            ctx.beginPath();
+            ctx.arc(_this.pos.x, _this.pos.y, _this.radius, 0, 2 * Math.PI, false);
+            ctx.fillStyle = 'rgba(156,217,249,'+ _this.active+')';
+            ctx.fill();
+        };
+    }
+
+    // Util
+    function getDistance(p1, p2) {
+        return Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2);
+    }
+    
+    // Make initAnimation function globally accessible
+    window.initAnimation = initAnimation;
+    
+})();
