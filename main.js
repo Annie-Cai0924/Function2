@@ -450,7 +450,14 @@ function handleResize() {
             p1.closest = closest;
         }
 
-
+        // assign a circle to each point
+        //Traverse every point
+        for(var i in points) {
+            //Create a new Circle using the constructor "circle". The radius is random between 2 and 4
+            //The color is semi-transparent white 'rgba(255,255,255,0.3)', giving the stars a slightly soft feel
+            var c = new Circle(points[i], 2+Math.random()*2, 'rgba(255,255,255,0.3)');
+            points[i].circle = c;
+        }
         
         // Start animation
         animate();
