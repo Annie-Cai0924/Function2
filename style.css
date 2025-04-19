@@ -241,6 +241,10 @@ header p {
     margin-left: 10px;
 }
 
+.delete-entry:hover {
+    opacity: 1;
+}
+
 /* Footer */
 footer {
     text-align: center;
