@@ -26,14 +26,18 @@ function initApp() {
     // Set up event listeners
     //When the user clicks the 'record emotion' button, we execute the logMoodEntry function
     document.getElementById('log-emotion').addEventListener('click', logMoodEntry);
-    
+    //Add page navigation
+    setupNavigation();
     // Render stars
     //It generates maps of stars and constellations based on the user's recorded emotions in the past
     renderStarChart();
     
     // Display history
     renderMoodHistory();
-    
+    //Generate emotional insights
+    generateMoodInsights();
+    //Generate emotional trends
+    generateMoodTrends();
     // Add resize listener
     //When the user resizes the browser window, we resize the page layout
     window.addEventListener('resize', handleResize);
@@ -41,6 +45,57 @@ function initApp() {
         initAnimation();
     
 }
+
+// Modify here: Set the page navigation
+function setupNavigation() {
+    const navLinks = document.querySelectorAll('.nav-link');
+    
+    navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            
+            // Obtain the ID of the target page
+            const targetPage = link.dataset.page;
+            
+            switchPage(targetPage);
+            
+            // If switch to the star map page, re-render the star map
+            if (targetPage === 'star-page') {
+                renderStarChart();
+            }
+            
+            // If switch to the feedback page, regenerate the emotional insights
+            if (targetPage === 'feedback-page') {
+                generateMoodInsights();
+                generateMoodTrends();
+            }
+        });
+    });
+}
+
+// Switch page function
+function switchPage(pageId) {
+    // Hide all pages
+    document.querySelectorAll('.page').forEach(page => {
+        page.classList.remove('active');
+    });
+    
+    // Display the target page
+    document.getElementById(pageId).classList.add('active');
+    
+    // Update the navigation activation status
+    document.querySelectorAll('.nav-link').forEach(link => {
+        if (link.dataset.page === pageId) {
+            link.classList.add('active');
+        } else {
+            link.classList.remove('active');
+        }
+    });
+    
+    // Update the variables of the current page
+    currentPage = pageId;
+}
+
 
 //https://developer.mozilla.org/en-US/docs/Web/API/Document/createElement
 //https://developer.mozilla.org/en-US/docs/Web/API/Element/classList
