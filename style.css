@@ -60,7 +60,44 @@ header p {
     text-align: center;
     font-size: 1.1rem;
     color: rgb(31, 166, 250);
-    margin-bottom: 50px;
+    margin-bottom: 30px;
+}
+
+.main-nav {
+    margin-bottom: 30px;
+}
+
+.main-nav ul {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    gap: 20px;
+}
+
+.main-nav .nav-link {
+    color: white;
+    text-decoration: none;
+    padding: 8px 15px;
+    border-radius: 20px;
+    background-color: rgba(255, 255, 255, 0.1);
+    transition: all 0.3s;
+}
+
+.main-nav .nav-link:hover {
+    background-color: rgba(52, 152, 219, 0.3);
+}
+
+.main-nav .nav-link.active {
+    background-color: var(--accent-color);
+}
+
+
+.page {
+    display: none;
+}
+
+.page.active {
+    display: block;
 }
 
 .mood-input {
@@ -98,6 +135,10 @@ header p {
     background-color: rgba(52, 152, 219, 0.2);
 }
 
+.mood-button.selected {
+    background-color: rgba(52, 152, 219, 0.4);
+    border-color: var(--accent-color);
+}
 
 /* Visualization section */
 .visualization {
