@@ -34,7 +34,7 @@ body {
     z-index: 10;
 }
 
-/* Canvas 背景 */
+/* Canvas Background */
 #demo-canvas {
     position: fixed;
     top: 0;
@@ -63,6 +63,19 @@ header p {
     margin-bottom: 50px;
 }
 
+.mood-input {
+    background-color: rgba(1, 11, 33, 0.7);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.mood-category {
+    margin-bottom: 20px;
+}
+
 .mood-buttons {
     display: flex;
     flex-wrap: wrap;
@@ -70,8 +83,19 @@ header p {
     margin-bottom: 20px;
 }
 
+.mood-button {
+    padding: 10px 15px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+    color: white;
+}
+
 .mood-button:hover {
-    background-color: rgba(52, 152, 219, 0.1);
+    background-color: rgba(52, 152, 219, 0.2);
 }
 
 
@@ -81,12 +105,13 @@ header p {
 }
 
 .star-chart {
-    background-color: rgb(1, 11, 33);
-    height: 300px;
+    background-color: rgba(1, 11, 33, 0.5);
+    height: 400px; 
     position: relative;
     overflow: hidden;
     border-radius: 5px;
-    border: 1px solid #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
 .history-entry {
