@@ -295,6 +295,69 @@ header p {
     font-style: italic;
 }
 
+#mood-trends {
+    margin-top: 20px;
+}
+
+.trend-chart {
+    height: 200px;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 5px;
+    margin-top: 15px;
+    display: flex;
+    align-items: flex-end;
+    padding: 10px;
+    gap: 5px;
+}
+
+.trend-bar {
+    flex: 1;
+    background-color: var(--accent-color);
+    border-radius: 3px 3px 0 0;
+    transition: height 0.3s;
+    position: relative;
+}
+
+.trend-bar::after {
+    content: attr(data-emotion);
+    position: absolute;
+    bottom: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.7rem;
+    color: #7f8c8d;
+}
+
+.primary-button {
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 1rem;
+    display: block;
+    margin: 20px auto 0;
+}
+
+.primary-button:hover {
+    background-color: #2980b9;
+}
+
+.intensity-slider {
+    width: 100%;
+    margin: 10px 0;
+}
+
+.intensity-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 5px;
+    font-size: 0.9rem;
+    color: #7f8c8d;
+}
 
 /* Footer */
 footer {
@@ -323,6 +386,16 @@ footer {
         font-size: 1rem;
     }
     
+    .main-nav ul {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .main-nav .nav-link {
+        display: block;
+        text-align: center;
+    }
+
     .mood-input {
         padding: 15px;
         margin-bottom: 15px;
@@ -341,7 +414,7 @@ footer {
     }
     
     .star-chart {
-        height: 200px;
+        height: 250px;
     }
     
     .history {

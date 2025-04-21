@@ -370,7 +370,20 @@ function createMoodStar(entry, container, position, index, total) {
     // Add tooltip
     star.title = `${entry.emotion.name} (${entry.intensity}/10)`;
     
+     // Add click event to show details
+     star.addEventListener('click', () => {
+        showMoodDetails(entry);
+    });
+
     container.appendChild(star);
+}
+
+// Show emotional details
+function showMoodDetails(entry) {
+    const date = new Date(entry.timestamp);
+    const formattedDate = `${date.toLocaleDateString()} ${date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+    
+    alert(`Date: ${formattedDate}\nEmotion: ${entry.emotion.name} ${entry.emotion.emoji}\nIntensity: ${entry.intensity}/10`);
 }
 
 //The main purpose of this code is to prepare for the next step -- to loop through recentEntries to display them on the page. You can go ahead and complete the following sections to actually create DOM elements to display these mood records
@@ -441,6 +454,8 @@ function deleteEntry(index) {
         // Update UI
         renderStarChart();
         renderMoodHistory();
+        generateMoodInsights();
+        generateMoodTrends();
         
         // Show feedback
         showFeedback('Entry deleted successfully!');
