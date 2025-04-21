@@ -433,14 +433,28 @@ function createMoodStar(entry, container, position, index, total) {
     const left = position.left;
     const top = position.top;
 
-//Calculate the brightness of the stars based on the time 
-//The recent records are brighter and the older ones are darker
-    const recency = index / total; // 0 is the earliest record and 1 is the latest
-    const brightness = 0.4 + (recency * 0.6); // The brightness range is 0.4-1.0
+// Size adjustment based on strength and screen size
+const isMobile = window.innerWidth <= 480;
+const isSmallMobile = window.innerWidth <= 375;
 
-    
-    // Random rotation
-    const rotation = Math.random() * 60 - 30;
+// Use a more appropriate size factor on small screens
+let sizeFactor = 1.5; // the site size
+if (isSmallMobile) {
+    sizeFactor = 0.8; // optimize the mobile size 
+} else if (isMobile) {
+    sizeFactor = 1.0; // mobile size
+}
+
+const size = 6 + (entry.intensity * sizeFactor * 0.6);
+
+// Color based on emotion
+const color = entry.emotion.color;
+
+// Calculate the brightness of the stars based on the time
+const brightness = 1.0; // the most bright
+
+// Random rotation Angle
+const rotation = Math.random() * 60 - 30;
     
     // Apply styles
     star.style.position = 'absolute';
