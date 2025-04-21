@@ -360,7 +360,7 @@ function createBackgroundStars(container) {
            (Math.random() * 3 + 1);
         
         // Opacity
-        const opacity = Math.random() * 0.4 + 0.2; 
+        const opacity = Math.random() * 0.7 + 0.3; 
         
         // Random rotation
         //rotation Sets the Angle of rotation of a star. The range is -30 to 30 degrees. Make the stars appear to rotate at different angles
@@ -378,11 +378,48 @@ function createBackgroundStars(container) {
         //The animationDuration is randomly generated and represents the duration of the flashing animation (between 5 and 13 seconds)
         // Simple twinkle animation
         //The animation property applies a twinkle animation with an animationDuration of seconds and an infinite loop
-        const animationDuration = Math.random() * 8 + 5;
-        star.style.animation = `twinkle ${animationDuration}s infinite`;
-        star.style.animationDelay = `${Math.random() * 5}s`;
+        const animationDuration = isMobileSmall ? 
+        (Math.random() * 5 + 5) : 
+        (Math.random() * 8 + 3);
+    star.style.animation = `twinkle ${animationDuration}s infinite`;
+    star.style.animationDelay = `${Math.random() * 5}s`;
         
-        container.appendChild(star);
+         // add some lightly style and reduce on the mobile size
+         const glowSize = isMobileSmall ? 
+         (Math.random() * 3 + 1) : 
+         (Math.random() * 5 + 2);
+     star.style.boxShadow = `0 0 ${glowSize}px rgba(255, 255, 255, ${opacity})`;
+     
+     container.appendChild(star);
+    }
+
+        // add aome big stars and reduce the amount about the mobile's
+        const numBigStars = isMobileSmall ? 8 : 15;
+        for (let i = 0; i < numBigStars; i++) {
+            const bigStar = document.createElement('div');
+            bigStar.className = 'star background-star';
+            
+            const left = Math.random() * 100;
+            const top = Math.random() * 100;
+            const size = isMobileSmall ? 
+                (Math.random() * 1.5 + 2) : 
+                (Math.random() * 2 + 3);
+            
+            bigStar.style.left = `${left}%`;
+            bigStar.style.top = `${top}%`;
+            bigStar.style.width = `${size}px`;
+            bigStar.style.height = `${size}px`;
+            bigStar.style.opacity = 0.9;
+            
+            // adjust the size of light
+            const glowSize = isMobileSmall ? size * 2 : size * 3;
+            bigStar.style.boxShadow = `0 0 ${glowSize}px rgba(255, 255, 255, 0.8)`;
+            
+            const animationDuration = Math.random() * 5 + 5;
+            bigStar.style.animation = `twinkle ${animationDuration}s infinite`;
+            
+            container.appendChild(bigStar);
+ 
     }
 }
 
