@@ -464,12 +464,19 @@ const rotation = Math.random() * 60 - 30;
     star.style.height = `${size}px`;
     star.style.backgroundColor = color;
     star.style.opacity = brightness;
-    star.style.transform = `rotate(${rotation}deg)`;
-    star.style.boxShadow = `0 0 ${3 + size/2}px rgba(255, 255, 255, ${brightness * 0.7})`;
-    
-    // Add tooltip
-    star.title = `${entry.emotion.name} (${entry.intensity}/10)`;
-    
+   
+     // Add a halo effect and reduce it appropriately on a small screen
+     const glowSize = isSmallMobile ? size * 0.8 : size;
+     star.style.boxShadow = `0 0 ${glowSize}px ${color}, 0 0 ${glowSize * 1.3}px rgba(255, 255, 255, 0.8)`;
+     star.style.transform = `rotate(${rotation}deg)`;
+     
+     // Add the flickering animation
+     const animationDuration = 3 + Math.random() * 4;
+     star.style.animation = `twinkle ${animationDuration}s infinite`;
+     
+     // Add tooltip
+     star.title = `${entry.emotion.name} (${entry.intensity}/10) - ${new Date(entry.timestamp).toLocaleString()}`;
+ 
      // Add click event to show details
      star.addEventListener('click', () => {
         showMoodDetails(entry);
