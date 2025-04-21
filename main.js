@@ -567,6 +567,80 @@ function generateMoodInsights() {
         }
     };
     
+    // Execution insight analysis
+    checkConsecutiveEmotions();
+    checkIntensityTrends();
+    
+    // Show the insight results
+    if (insights.length === 0) {
+        // If there is no specific insight, show general information
+        insightsContainer.innerHTML = `
+            <div class="insight-item">
+                <h4>Your emotional journey looks balanced</h4>
+                <p>Keep tracking your emotions to receive more personalized insights.</p>
+            </div>
+        `;
+    } else {
+        // Show all insights
+        insights.forEach(insight => {
+            const insightEl = document.createElement('div');
+            insightEl.className = `insight-item ${insight.type}`;
+            
+            insightEl.innerHTML = `
+                <h4>${insight.title}</h4>
+                <p>${insight.message}</p>
+            `;
+            
+            insightsContainer.appendChild(insightEl);
+        });
+    }
+}
+//Generate emotional trends此处修改：生成情绪趋势
+function generateMoodTrends() {
+    const trendsContainer = document.getElementById('trends-container');
+    
+    // Clear the existing content
+    trendsContainer.innerHTML = '';
+    
+    // If there are not enough records, display the default message
+    if (moodEntries.length < 3) {
+        trendsContainer.innerHTML = '<p class="no-insights">More data needed to generate trends.</p>';
+        return;
+    }
+    
+    // Calculate the occurrence frequency of each emotion
+    const emotionCounts = {};
+    emotions.forEach(emotion => {
+        emotionCounts[emotion.id] = 0;
+    });
+    
+    moodEntries.forEach(entry => {
+        emotionCounts[entry.emotion.id]++;
+    });
+    
+    // Create a trend chart
+    const chartEl = document.createElement('div');
+    chartEl.className = 'trend-chart';
+    
+    // Find the highest count for calculating the proportion
+    const maxCount = Math.max(...Object.values(emotionCounts));
+    
+    // Create a bar chart for each emotion
+    emotions.forEach(emotion => {
+        if (emotionCounts[emotion.id] > 0) {
+            const barHeight = (emotionCounts[emotion.id] / maxCount) * 100;
+            
+            const barEl = document.createElement('div');
+            barEl.className = 'trend-bar';
+            barEl.style.height = `${barHeight}%`;
+            barEl.style.backgroundColor = emotion.color;
+            barEl.setAttribute('data-emotion', emotion.name);
+            barEl.title = `${emotion.name}: ${emotionCounts[emotion.id]} entries`;
+            
+            chartEl.appendChild(barEl);
+        }
+    });
+    
     trendsContainer.appendChild(chartEl);
 }
 
