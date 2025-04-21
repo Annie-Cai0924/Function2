@@ -462,6 +462,114 @@ function deleteEntry(index) {
     }
 }
 
+// Generate emotional insights
+function generateMoodInsights() {
+    const insightsContainer = document.getElementById('mood-insights');
+    
+    // Clear the existing content
+    insightsContainer.innerHTML = '';
+    
+    // If there are not enough records, display the default message
+    if (moodEntries.length < 3) {
+        insightsContainer.innerHTML = '<p class="no-insights">Track your emotions regularly to receive personalized insights.</p>';
+        return;
+    }
+    
+    // Obtain the records of the last 7 days
+    const oneWeekAgo = Date.now() - (7 * 24 * 60 * 60 * 1000);
+    const recentEntries = moodEntries.filter(entry => entry.timestamp > oneWeekAgo);
+    
+    // Create emotional insights
+    const insights = [];
+    
+    // Check for the same emotions for three consecutive days
+    const checkConsecutiveEmotions = () => {
+        const sortedEntries = [...recentEntries].sort((a, b) => a.timestamp - b.timestamp);
+        
+        const emotionCounts = {};
+        let consecutiveDays = 1;
+        let lastEmotionId = null;
+        let lastDate = null;
+        
+        for (const entry of sortedEntries) {
+            const entryDate = new Date(entry.timestamp).toDateString();
+            
+            // If there are multiple records on the same day, skip them
+            if (entryDate === lastDate) {
+                continue;
+            }
+            
+            // Check if the mood is the same as the previous day
+            if (entry.emotion.id === lastEmotionId) {
+                consecutiveDays++;
+                
+                // Achieve three consecutive days
+                if (consecutiveDays >= 3) {
+                    // Create different feedbacks based on emotion types
+                    if (['sadness', 'anger', 'fear'].includes(entry.emotion.id)) {
+                        insights.push({
+                            title: `You've been feeling ${entry.emotion.name} for ${consecutiveDays} days`,
+                            message: `It's important to acknowledge your ${entry.emotion.name}. Consider talking to someone you trust or try activities that usually make you feel better.`,
+                            type: 'warning',
+                            emotion: entry.emotion
+                        });
+                    } else if (entry.emotion.id === 'joy') {
+                        insights.push({
+                            title: `${consecutiveDays} days of happiness!`,
+                            message: `That's wonderful! You've been experiencing Joy for ${consecutiveDays} consecutive days. Keep doing what makes you happy!`,
+                            type: 'positive',
+                            emotion: entry.emotion
+                        });
+                    }
+                    
+                    // Report consecutive emotions only once
+                    break;
+                }
+            } else {
+                consecutiveDays = 1;
+            }
+            
+            lastEmotionId = entry.emotion.id;
+            lastDate = entryDate;
+        }
+    };
+    
+    // Check the changes in emotional intensity
+    const checkIntensityTrends = () => {
+        if (recentEntries.length < 4) return;
+        
+        // base on time
+        const sortedEntries = [...recentEntries].sort((a, b) => a.timestamp - b.timestamp);
+        
+        // Calculate the average intensity
+        let sumIntensity = 0;
+        sortedEntries.forEach(entry => {
+            sumIntensity += entry.intensity;
+        });
+        const avgIntensity = sumIntensity / sortedEntries.length;
+        
+        // Check whether the recent intensity is significantly higher than the average
+        const recentIntensities = sortedEntries.slice(-3).map(entry => entry.intensity);
+        const recentAvg = recentIntensities.reduce((a, b) => a + b, 0) / recentIntensities.length;
+        
+        if (recentAvg > avgIntensity + 2) {
+            insights.push({
+                title: "Your emotional intensity is increasing",
+                message: "You've been experiencing emotions more intensely lately. This could be a response to recent events. Take some time for self-care and reflection.",
+                type: 'neutral'
+            });
+        } else if (recentAvg < avgIntensity - 2 && avgIntensity > 5) {
+            insights.push({
+                title: "Your emotional intensity is decreasing",
+                message: "Your emotions have been less intense recently. This could be a sign of emotional balance or possibly emotional numbness. Check in with yourself.",
+                type: 'neutral'
+            });
+        }
+    };
+    
+    trendsContainer.appendChild(chartEl);
+}
+
 // Handle window resize
 function handleResize() {
     const isMobile = window.innerWidth <= 480;
