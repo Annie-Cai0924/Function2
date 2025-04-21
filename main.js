@@ -143,7 +143,7 @@ function generateEmotionButtons() {
             const nameSpan = button.querySelector('.emotion-name');
             nameSpan.style.fontSize = '0.8rem';
         }
-        
+
             else if (isMobile) {
                 // 一般移动设备
                 button.innerHTML = `<span>${emotion.emoji}</span>${emotion.name}`;
@@ -219,7 +219,15 @@ function logMoodEntry() {
     //Automatically switch to the star map page
     setTimeout(() => {
         switchPage('star-page');
-        }, 1000);
+
+        // Make sure to scroll to the top on your mobile device
+        if (window.innerWidth <= 480) {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+    }, 1000);
 }
 
 
@@ -331,9 +339,9 @@ function calculateStarPosition(index, total) {
 }
 
 function createBackgroundStars(container) {
-    // Add simple background stars
-    //Defines the number of stars in the background
-    const numStars = 60; 
+    // Reduce the number of stars on the small screen to improve performance
+    const isMobileSmall = window.innerWidth <= 375;
+    const numStars = isMobileSmall ? 80 : 150;
     
     for (let i = 0; i < numStars; i++) {
         const star = document.createElement('div');
@@ -346,7 +354,10 @@ function createBackgroundStars(container) {
         
         // Simple size
         //size Sets a random size for the star, from a minimum of 1px to a maximum of 3px. This makes each star appear to have a different size
-        const size = Math.random() * 2 + 1; 
+           // Variable size - Reduce it slightly on the small screen
+           const size = isMobileSmall ? 
+           (Math.random() * 1.5 + 1) : 
+           (Math.random() * 3 + 1);
         
         // Opacity
         const opacity = Math.random() * 0.4 + 0.2; 
