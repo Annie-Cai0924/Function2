@@ -15,6 +15,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // Check if on mobile
     if (window.innerWidth <= 480) {
         document.body.classList.add('mobile-view');
+
+      // Add additional scrolling listeners on the small screen
+      enableMobileScrolling();
+    }
+    
+    // Check the ultra-small screen
+    if (window.innerWidth <= 375) {
+        document.body.classList.add('small-mobile-view');
     }
 });
 //This is the "launch entry" function for our entire program
@@ -105,6 +113,10 @@ function generateEmotionButtons() {
     const emotionsContainer = document.getElementById('primary-emotions');
     emotionsContainer.innerHTML = ''; // Clear existing buttons
     
+    // cbeck the screen size
+    const isMobile = window.innerWidth <= 480;
+    const isSmallMobile = window.innerWidth <= 375;
+
     emotions.forEach(emotion => {
         const button = document.createElement('button');
         button.className = `mood-button mood-${emotion.id}`;
@@ -112,7 +124,6 @@ function generateEmotionButtons() {
         button.dataset.emotion = emotion.id;
         
         // Mobile style
-        const isMobile = window.innerWidth <= 480;
         //For mobile phones, i gave the buttons a more compact style (to bring the emoji closer to the text). If it's a computer, use the normal layout.
         if (isMobile) {
             button.innerHTML = `<span>${emotion.emoji}</span>${emotion.name}`;
