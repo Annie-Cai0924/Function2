@@ -167,7 +167,9 @@ function logMoodEntry() {
     // Update the "star map" and "history" on the page - that is, once the data has changed, visually re-render it, otherwise the user can't see what was just recorded
     renderStarChart();
     renderMoodHistory();
-    
+
+    //Update emotional insights
+    generateMoodInsights();
     // Reset form
     //Clear the form and prepare for the next record. For example, empty the intensity input box and uncheck the selected emotion
     resetForm();
@@ -175,7 +177,13 @@ function logMoodEntry() {
     // Show feedback
     //Give the user a feedback that tells them "The record was successful!
     showFeedback('Mood logged successfully!');
+
+    //Automatically switch to the star map page
+    setTimeout(() => {
+        switchPage('star-page');
+        }, 1000);
 }
+
 
 //https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelectorAll
 //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach
