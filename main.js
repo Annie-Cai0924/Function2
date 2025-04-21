@@ -125,11 +125,38 @@ function generateEmotionButtons() {
         
         // Mobile style
         //For mobile phones, i gave the buttons a more compact style (to bring the emoji closer to the text). If it's a computer, use the normal layout.
-        if (isMobile) {
-            button.innerHTML = `<span>${emotion.emoji}</span>${emotion.name}`;
-        } else {
+        if (isMobile) { 
+            // mobile size
+            button.innerHTML = `<span>${emotion.emoji}</span><span class="emotion-name">${emotion.name}</span>`;
+            
+            // mobile size style
+            button.style.display = 'flex';
+            button.style.flexDirection = 'column';
+            button.style.alignItems = 'center';
+            button.style.justifyContent = 'center';
+            button.style.padding = '8px 5px';
+            
+            const emojiSpan = button.querySelector('span:first-child');
+            emojiSpan.style.fontSize = '1rem';
+            emojiSpan.style.marginBottom = '2px';
+            
+            const nameSpan = button.querySelector('.emotion-name');
+            nameSpan.style.fontSize = '0.8rem';
+        }
+        
+            else if (isMobile) {
+                // 一般移动设备
+                button.innerHTML = `<span>${emotion.emoji}</span>${emotion.name}`;
+                
+                const emojiSpan = button.querySelector('span');
+                emojiSpan.style.display = 'block';
+                emojiSpan.style.marginBottom = '5px';
+                
+            } else {
+            //site size
             button.innerHTML = `${emotion.emoji} ${emotion.name}`;
         }
+
         //Every button has to listen for "being clicked." This function is executed when the user clicks on it
         button.addEventListener('click', () => {
             // Remove selected class from all buttons
