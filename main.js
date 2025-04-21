@@ -219,6 +219,7 @@ function showFeedback(message) {
     feedback.style.transform = 'translateX(-50%)';
     feedback.style.padding = '10px 20px';
     feedback.style.color = 'white';
+    feedback.style.backgroundColor = 'rgba(52, 152, 219, 0.8)';
     feedback.style.borderRadius = '5px';
     feedback.style.zIndex = '1000';
     
@@ -230,7 +231,7 @@ function showFeedback(message) {
         document.body.removeChild(feedback);
     }, 3000);
 }
-
+//Re-implement the star map rendering and place the stars in chronological order
 function renderStarChart() {
     const starsContainer = document.getElementById('stars-container');
     
@@ -240,10 +241,55 @@ function renderStarChart() {
     // Create background stars
     createBackgroundStars(starsContainer);
     
+    //Sort the emotional records in chronological order
+    const sortedEntries = [...moodEntries].sort((a, b) => a.timestamp - b.timestamp);
+
     // Create stars for each entry
-    moodEntries.forEach(entry => {
-        createMoodStar(entry, starsContainer);
+    sortedEntries.forEach((entry, index) => {
+        // the location is base on the time oder
+        const position = calculateStarPosition(index, sortedEntries.length);
+        createMoodStar(entry, starsContainer, position, index, sortedEntries.length);
     });
+}
+
+//This function is to calculated the stars' location
+function calculateStarPosition(index, total) {
+    if (total <= 1) {
+        return { left: 50, top: 50 }; // center
+    }
+    
+    //Calculate the position of the stars on the timeline (within the range of 0 to 1)
+    const timePosition = index / (total - 1);
+    
+    // Generate the path point: An S-shaped path from the top left corner to the bottom right corner
+    let left, top;
+    
+    if (timePosition < 0.25) {
+        //Top left to top right (0-25%)
+        left = 20 + (timePosition * 4) * 60;
+        top = 20 + Math.sin(timePosition * Math.PI) * 10;
+    } else if (timePosition < 0.5) {
+        //  From top right to bottom right (25-50%)
+        left = 80 - Math.sin((timePosition - 0.25) * Math.PI) * 10;
+        top = 20 + ((timePosition - 0.25) * 4) * 60;
+    } else if (timePosition < 0.75) {
+        // From the bottom right to the bottom left (50-75%)
+        left = 80 - ((timePosition - 0.5) * 4) * 60;
+        top = 80 - Math.sin((timePosition - 0.5) * Math.PI) * 10;
+    } else {
+        // Lower left to the center (75-100%)
+        left = 20 + Math.sin((timePosition - 0.75) * Math.PI) * 10;
+        top = 80 - ((timePosition - 0.75) * 4) * 30;
+    }
+    
+    // Add some random offsets to make the stars not completely aligned
+    const randomOffsetX = Math.random() * 6 - 3;
+    const randomOffsetY = Math.random() * 6 - 3;
+    
+    return { 
+        left: left + randomOffsetX, 
+        top: top + randomOffsetY
+    };
 }
 
 function createBackgroundStars(container) {
