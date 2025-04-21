@@ -339,47 +339,33 @@ function createBackgroundStars(container) {
 
 //This line of code creates a new div element that represents a star. We added the class star mood-star to it
 //A record of a user's emotions and container is The container that holds all the stars
-function createMoodStar(entry, container) {
-
+function createMoodStar(entry, container, position, index, total) {
     const star = document.createElement('div');
     star.className = 'star mood-star';
-   // https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/style
-    // Calculate position
-    const totalDuration = Date.now() - (moodEntries.length > 0 ? moodEntries[0].timestamp : Date.now());
-    const entryAge = Date.now() - entry.timestamp;
-    const ageRatio = totalDuration > 0 ? entryAge / totalDuration : 0;
     
-    // Add randomness
-    //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
-    const randomOffsetX = Math.random() * 60 - 30; 
-    const randomOffsetY = Math.random() * 60 - 30;
-    
-    const left = 10 + (80 * (1 - ageRatio)) + randomOffsetX;
-    const top = 10 + (80 * ageRatio) + randomOffsetY;
-    
-    // Ensure within bounds
-    const boundedLeft = Math.min(Math.max(left, 5), 95);
-    const boundedTop = Math.min(Math.max(top, 5), 95);
-    
-    // Size based on intensity
-    const isMobile = window.innerWidth <= 480;
-    const sizeFactor = isMobile ? 0.8 : 1.2;
-    const size = 4 + (entry.intensity * sizeFactor * 0.5);
-    
-    // Color based on emotion
-    const color = entry.emotion.color;
+    // Use the calculated position
+    const left = position.left;
+    const top = position.top;
+
+//Calculate the brightness of the stars based on the time 
+//The recent records are brighter and the older ones are darker
+    const recency = index / total; // 0 is the earliest record and 1 is the latest
+    const brightness = 0.4 + (recency * 0.6); // The brightness range is 0.4-1.0
+
     
     // Random rotation
     const rotation = Math.random() * 60 - 30;
     
     // Apply styles
     star.style.position = 'absolute';
-    star.style.left = `${boundedLeft}%`;
-    star.style.top = `${boundedTop}%`;
+    star.style.left = `${left}%`;
+    star.style.top = `${top}%`;
     star.style.width = `${size}px`;
     star.style.height = `${size}px`;
     star.style.backgroundColor = color;
+    star.style.opacity = brightness;
     star.style.transform = `rotate(${rotation}deg)`;
+    star.style.boxShadow = `0 0 ${3 + size/2}px rgba(255, 255, 255, ${brightness * 0.7})`;
     
     // Add tooltip
     star.title = `${entry.emotion.name} (${entry.intensity}/10)`;
