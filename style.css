@@ -22,7 +22,6 @@
 body {
     font-family: sans-serif;
     background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-    background-color: rgb(1, 11, 33);
     color: white;
     line-height: 1.6;
     position: relative;
@@ -48,6 +47,7 @@ body {
     height: 100%;
     z-index: 1;
     pointer-events: none; 
+    touch-action: none;
 }
 
 h1, h2, h3 {
