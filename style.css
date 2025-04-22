@@ -143,6 +143,13 @@ header p {
     margin-bottom: 20px;
 }
 
+.mood-category h3 {
+    font-size: 1.4rem;
+    margin-bottom: 15px;
+    color: #3498db;
+    text-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+}
+
 .mood-buttons {
     display: flex;
     flex-wrap: wrap;
