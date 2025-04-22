@@ -574,6 +574,45 @@ function showMoodDetails(entry) {
       const body = content.querySelector('.details-body');
       body.style.padding = isMobileSmall ? '15px' : '20px';
       body.style.fontSize = isMobileSmall ? '0.9rem' : '1rem';
+      
+      //Make the strength bar look like a colorful progress bar
+      const intensityBar = content.querySelector('.intensity-bar');
+      intensityBar.style.height = '8px';
+      intensityBar.style.display = 'inline-block';
+      intensityBar.style.borderRadius = '4px';
+      intensityBar.style.marginRight = '10px';
+
+      // Trigger with setTimeout after a 10-millisecond delay to make the pop-up window gradually appear and have an ascending animation
+    setTimeout(() => {
+        detailsPopup.style.opacity = '1';
+        content.style.transform = 'translateY(0)';
+    }, 10);
+    
+    // When the mouse moves over the close button, increase the transparency to prompt the user that it is clickable
+    closeBtn.addEventListener('mouseover', () => {
+        closeBtn.style.opacity = '1';
+    });
+    
+    closeBtn.addEventListener('mouseout', () => {
+        closeBtn.style.opacity = '0.7';
+    });
+    
+    //Turn off the animation: The pop-up window fades, the content slides down, and then remove the element from the page
+    const closePopup = () => {
+        detailsPopup.style.opacity = '0';
+        content.style.transform = 'translateY(20px)';
+        setTimeout(() => {
+            document.body.removeChild(detailsPopup);
+        }, 300);
+    };
+    
+    //Close when the "×" button is clicked. It is also closed when the black background area is clicked
+    closeBtn.addEventListener('click', closePopup);
+    detailsPopup.addEventListener('click', (e) => {
+        if (e.target === detailsPopup) {
+            closePopup();
+        }
+    });
 }
 
 //The main purpose of this code is to prepare for the next step -- to loop through recentEntries to display them on the page. You can go ahead and complete the following sections to actually create DOM elements to display these mood records
