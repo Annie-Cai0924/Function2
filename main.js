@@ -149,6 +149,7 @@ function generateEmotionButtons() {
             
             const nameSpan = button.querySelector('.emotion-name');
             nameSpan.style.fontSize = '0.8rem';
+            nameSpan.style.color = emotion.color;
         }
 
             else if (isMobile) {
@@ -158,10 +159,12 @@ function generateEmotionButtons() {
                 const emojiSpan = button.querySelector('span');
                 emojiSpan.style.display = 'block';
                 emojiSpan.style.marginBottom = '5px';
+                button.style.color = emotion.color;
                 
             } else {
             //site size
             button.innerHTML = `${emotion.emoji} ${emotion.name}`;
+            button.style.color = emotion.color;
         }
 
         //Every button has to listen for "being clicked." This function is executed when the user clicks on it
@@ -170,6 +173,13 @@ function generateEmotionButtons() {
             document.querySelectorAll('.mood-button').forEach(btn => {
                 //Remove the.selected style class and return the button to its unselected state
                 btn.classList.remove('selected');
+                
+                const btnEmotionId = btn.dataset.emotion;
+                const btnEmotion = emotions.find(e => e.id === btnEmotionId);
+                if (btnEmotion) {
+                    btn.style.backgroundColor = `${btnEmotion.color}15`;
+                    btn.style.boxShadow = 'none';
+                }
             });
             
             // Add selected class
