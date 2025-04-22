@@ -877,11 +877,15 @@ function generateMoodTrends() {
 function handleResize() {
     const isMobile = window.innerWidth <= 480;
     const wasMobile = document.body.classList.contains('mobile-view');
-    
+    const isSmallMobile = window.innerWidth <= 375;
+    const wasSmallMobile = document.body.classList.contains('small-mobile-view');
+
     if (isMobile && !wasMobile) {
         document.body.classList.add('mobile-view');
         // Regenerate for mobile layout
         generateEmotionButtons();
+        renderStarChart();
+        enableMobileScrolling();
         // Redraw stars
         renderStarChart();
     } else if (!isMobile && wasMobile) {
@@ -890,6 +894,22 @@ function handleResize() {
         generateEmotionButtons();
         // Redraw stars
         renderStarChart();
+
+        //mobile size style
+        if (isSmallMobile && !wasSmallMobile) {
+            document.body.classList.add('small-mobile-view');
+            generateEmotionButtons();
+            renderStarChart();
+            document.querySelectorAll('.page').forEach(page => {
+                page.style.paddingBottom = '50px';
+            });
+        } else if (!isSmallMobile && wasSmallMobile) {
+            document.body.classList.remove('small-mobile-view');
+            generateEmotionButtons();
+            renderStarChart();
+            document.querySelectorAll('.page').forEach(page => {
+                page.style.paddingBottom = '20px';
+            });
     }
 }
 
@@ -1124,4 +1144,5 @@ function handleResize() {
     // Make initAnimation function globally accessible
     window.initAnimation = initAnimation;
     
-})();
+    })
+};
