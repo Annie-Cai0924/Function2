@@ -489,8 +489,91 @@ const rotation = Math.random() * 60 - 30;
 function showMoodDetails(entry) {
     const date = new Date(entry.timestamp);
     const formattedDate = `${date.toLocaleDateString()} ${date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+
+    //Create a floating layer to display the details
+    //Add content to the pop-up window
+    const detailsPopup = document.createElement('div');
+    detailsPopup.className = 'mood-details-popup';
+    //Display emojis, emotion names, and close buttons
+    //Display the date and strength bar
+    detailsPopup.innerHTML = `
+        <div class="mood-details-content">
+            <div class="details-header" style="background-color: ${entry.emotion.color}20;">
+                <span class="details-emoji">${entry.emotion.emoji}</span>
+                <h3>${entry.emotion.name}</h3>
+                <span class="close-details">×</span>
+            </div>
+            <div class="details-body">
+                <p><strong>Date:</strong> ${formattedDate}</p>
+                <p><strong>Intensity:</strong> 
+                    <span class="intensity-bar" style="width: ${entry.intensity * 10}%; background-color: ${entry.emotion.color};"></span>
+                    <span class="intensity-text">${entry.intensity}/10</span>
+                </p>
+            </div>
+        </div>
+    `;
+     // Add the close button
+     //Add the created pop-up window to the entire web page to make it appear on the page.
+     document.body.appendChild(detailsPopup);
+
+    //Add style
+    //Set the style of the pop-up mask
+    detailsPopup.style.position = 'fixed';
+    detailsPopup.style.top = '0';
+    detailsPopup.style.left = '0';
+    detailsPopup.style.width = '100%';
+    detailsPopup.style.height = '100%';
+    detailsPopup.style.backgroundColor = 'rgba(0,0,0,0.7)';
+    detailsPopup.style.display = 'flex';
+    detailsPopup.style.justifyContent = 'center';
+    detailsPopup.style.alignItems = 'center';
+    detailsPopup.style.zIndex = '100';
+    detailsPopup.style.opacity = '0';
+    detailsPopup.style.transition = 'opacity 0.3s ease';
     
-    alert(`Date: ${formattedDate}\nEmotion: ${entry.emotion.name} ${entry.emotion.emoji}\nIntensity: ${entry.intensity}/10`);
+    //Determine whether the current screen is less than or equal to 375px. If it is, set the width to 90% (relative width); otherwise, set it to 300px (fixed width)
+    const content = detailsPopup.querySelector('.mood-details-content');
+      const isMobileSmall = window.innerWidth <= 375;
+      content.style.width = isMobileSmall ? '90%' : '300px';
+      
+      //Set the card content style: background, rounded corners, shadow, and initial downward shift of 20px for animation
+      content.style.backgroundColor = 'rgba(15, 23, 42, 0.95)';
+      content.style.borderRadius = isMobileSmall ? '12px' : '15px';
+      content.style.overflow = 'hidden';
+      content.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.5)';
+      content.style.transform = 'translateY(20px)';
+      content.style.transition = 'transform 0.3s ease';
+      
+      //Beautify the top title section, center the layout, add a lower border, and get the emoji and close button ready
+      //Emojis are more eye-catching. Use different font sizes on different devices
+      const header = content.querySelector('.details-header');
+      header.style.padding = isMobileSmall ? '15px' : '20px';
+      header.style.textAlign = 'center';
+      header.style.position = 'relative';
+      header.style.borderBottom = '1px solid rgba(255,255,255,0.1)';
+      
+      const emoji = content.querySelector('.details-emoji');
+      emoji.style.fontSize = isMobileSmall ? '32px' : '40px';
+      emoji.style.display = 'block';
+      emoji.style.marginBottom = isMobileSmall ? '5px' : '10px';
+      
+      //Set the font size and spacing of the emotion name
+      const title = content.querySelector('h3');
+      title.style.fontSize = isMobileSmall ? '1.2rem' : '1.5rem';
+      title.style.margin = '0';
+      //The "×" close button in the upper right corner has a hover effect
+      const closeBtn = content.querySelector('.close-details');
+      closeBtn.style.position = 'absolute';
+      closeBtn.style.top = '10px';
+      closeBtn.style.right = '15px';
+      closeBtn.style.fontSize = '24px';
+      closeBtn.style.cursor = 'pointer';
+      closeBtn.style.opacity = '0.7';
+      closeBtn.style.transition = 'opacity 0.2s';
+      
+      const body = content.querySelector('.details-body');
+      body.style.padding = isMobileSmall ? '15px' : '20px';
+      body.style.fontSize = isMobileSmall ? '0.9rem' : '1rem';
 }
 
 //The main purpose of this code is to prepare for the next step -- to loop through recentEntries to display them on the page. You can go ahead and complete the following sections to actually create DOM elements to display these mood records
