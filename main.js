@@ -102,6 +102,8 @@ function switchPage(pageId) {
     
     // Update the variables of the current page
     currentPage = pageId;
+
+    window.scrollTo(0, 0);
 }
 
 
