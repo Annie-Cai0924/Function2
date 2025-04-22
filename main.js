@@ -173,7 +173,7 @@ function generateEmotionButtons() {
             document.querySelectorAll('.mood-button').forEach(btn => {
                 //Remove the.selected style class and return the button to its unselected state
                 btn.classList.remove('selected');
-                
+
                 const btnEmotionId = btn.dataset.emotion;
                 const btnEmotion = emotions.find(e => e.id === btnEmotionId);
                 if (btnEmotion) {
@@ -184,9 +184,27 @@ function generateEmotionButtons() {
             
             // Add selected class
             button.classList.add('selected');
+
+            //buttons' color and Transparency
+            button.style.backgroundColor = `${emotion.color}30`;  
+            button.style.boxShadow = `0 0 15px ${emotion.color}80`; 
             
             // Update selected emotion
             selectedEmotion = emotion;
+            //animation about the mouse hover
+            button.addEventListener('mouseover', () => {
+                if (!button.classList.contains('selected')) {
+                    button.style.backgroundColor = `${emotion.color}25`; 
+                    button.style.boxShadow = `0 0 10px ${emotion.color}40`; 
+                }
+            });
+            
+            button.addEventListener('mouseout', () => {
+                if (!button.classList.contains('selected')) {
+                    button.style.backgroundColor = `${emotion.color}15`;
+                    button.style.boxShadow = 'none'; 
+                }
+            });
         });
         
         emotionsContainer.appendChild(button);
