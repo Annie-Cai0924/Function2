@@ -124,7 +124,12 @@ function generateEmotionButtons() {
         button.className = `mood-button mood-${emotion.id}`;
         //Save what emotion it represents on the button
         button.dataset.emotion = emotion.id;
-        
+
+        // Make the buttons' color same as the emotion
+        button.style.borderColor = emotion.color;
+        button.style.borderWidth = '2px';
+        button.style.backgroundColor = `${emotion.color}15`; 
+
         // Mobile style
         //For mobile phones, i gave the buttons a more compact style (to bring the emoji closer to the text). If it's a computer, use the normal layout.
         if (isMobile) { 
