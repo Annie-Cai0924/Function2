@@ -473,6 +473,7 @@ footer {
 @media (max-width: 480px) {
     .container {
         padding: 10px;
+        overflow-y: visible;
     }
     
     h1 {
@@ -505,18 +506,23 @@ footer {
     
     .mood-buttons {
         display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-columns: 1fr 1fr;
         gap: 8px;
     }
     
-    
+    .mood-button {
+        padding: 10px;
+        min-width: auto;
+        font-size: 0.9rem;
+    }
+
     .mood-button span {
         font-size: 1.2rem;
         margin-bottom: 5px;
     }
     
     .star-chart {
-        height: 250px;
+        height: 350px;
     }
     
     .history {
@@ -548,8 +554,8 @@ footer {
     }
     
     .primary-button {
-        padding: 10px 20px;
-        font-size: 0.9rem;
+        padding: 12px 25px;
+        font-size: 1rem;
     }
     
     footer {
@@ -557,6 +563,13 @@ footer {
         padding: 15px 0;
         font-size: 0.8rem;
     }
+}
+.page {
+    padding-bottom: 40px;
+}
+
+main {
+    overflow-y: visible;
 }
 
 /* Also fromhttps://codepen.io/micobytes/pen/aZjXxY */
@@ -584,6 +597,262 @@ footer {
 
 .mood-star {
     z-index: 3;
+}
+
+/* for mobile size changed */
+@media (max-width: 375px) {
+    body {
+        overflow-y: auto !important;
+    }
+
+    .container {
+        padding: 8px;
+        overflow-y: visible !important;
+    }
+    
+    h1 {
+        font-size: 1.3rem;
+        margin-top: 8px;
+        margin-bottom: 8px;
+    }
+    
+    header p {
+        font-size: 0.9rem;
+        margin-bottom: 20px;
+    }
+    
+    .main-nav {
+        margin-bottom: 20px;
+    }
+    
+    .main-nav .nav-link {
+        padding: 8px 15px;
+        font-size: 0.9rem;
+    }
+    
+    .mood-input {
+        padding: 12px;
+        border-radius: 12px;
+        margin-bottom: 12px;
+    }
+    
+    .mood-input h2 {
+        font-size: 1.1rem;
+        margin-bottom: 15px;
+    }
+    
+    .mood-category h3 {
+        font-size: 0.9rem;
+        margin-bottom: 10px;
+    }
+    
+    .mood-category {
+        margin-bottom: 15px;
+    }
+    
+    .mood-buttons {
+        max-height: none;
+        overflow-y: visible;
+    }
+    
+    .mood-button {
+        padding: 8px 5px;
+        font-size: 0.8rem;
+        border-radius: 8px;
+        border-width: 2px;
+    }
+    
+    .mood-button span {
+        font-size: 1rem;
+        margin-bottom: 3px;
+    }
+    
+    .intensity-slider {
+        margin: 8px 0;
+        padding: 0 5px;
+    }
+    
+    input[type="range"] {
+        height: 8px;
+        margin: 10px 0;
+    }
+    
+    input[type="range"]::-webkit-slider-thumb {
+        width: 20px;
+        height: 20px;
+    }
+    
+    .intensity-labels {
+        font-size: 0.8rem;
+    }
+    
+    .primary-button {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+        margin-top: 15px;
+        border-radius: 20px;
+    }
+    
+    .star-chart {
+        height: 250px;
+        border-radius: 12px;
+        margin-bottom: 10px;
+    }
+    
+    .star-legend {
+        margin-top: 10px;
+        gap: 15px;
+    }
+    
+    .legend-item {
+        font-size: 0.8rem;
+    }
+    
+    .history {
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+    
+    .history h2 {
+        padding: 8px 0;
+        font-size: 1.1rem;
+    }
+    
+    .history-list {
+        max-height: 180px;
+        overflow-y: auto !important;
+    }
+    
+    .history-entry {
+        padding: 8px;
+    }
+    
+    .entry-date {
+        width: 70px;
+        font-size: 0.7rem;
+    }
+    
+    .entry-mood {
+        font-size: 0.8rem;
+    }
+    
+    .mood-indicator {
+        width: 16px;
+        height: 16px;
+        font-size: 12px;
+        margin-right: 6px;
+    }
+    
+    .feedback-container {
+        padding: 12px;
+        overflow-y: visible;
+    }
+    
+    #mood-insights {
+        padding: 12px;
+        max-height: none;
+        overflow-y: visible;
+    }
+    
+    .insight-item {
+        padding: 12px;
+        margin-bottom: 12px;
+        border-radius: 8px;
+    }
+    
+    .insight-item h4 {
+        font-size: 1rem;
+    }
+    
+    .insight-item p {
+        font-size: 0.8rem;
+    }
+    
+    .page {
+        overflow-y: visible !important;
+        padding-bottom: 50px;
+    }
+    
+    #star-page {
+        min-height: calc(100vh - 180px);
+    }
+    
+    #feedback-page {
+        min-height: calc(100vh - 180px);
+    }
+    
+    #mood-insights, .trend-chart {
+        border-radius: 8px;
+        padding: 12px;
+    }
+    
+    .trend-chart {
+        height: 150px;
+        padding: 10px 8px;
+        gap: 5px;
+        margin-top: 10px;
+    }
+    
+    footer {
+        margin-top: 20px;
+        padding: 10px 0;
+    }
+    
+    .container {
+        padding-bottom: 20px;
+    }
+    
+    .mood-buttons {
+        gap: 6px;
+    }
+    
+    .history-list::-webkit-scrollbar {
+        width: 5px;
+    }
+    
+    .feedback-container {
+        margin-bottom: 20px;
+    }
+    
+    .mood-star {
+        z-index: 5;
+    }
+}
+
+.large-header {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+    overflow: hidden;
+    background-size: cover;
+    background-position: center center;
+    z-index: 1;
+}
+
+.star {
+    position: absolute;
+    background-color: #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+}
+
+.background-star {
+    z-index: 2;
+}
+
+.mood-star {
+    z-index: 5;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    opacity: 1 !important;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.8), 0 0 25px currentColor !important;
+}
+
+.mood-star:hover {
+    transform: scale(1.8) !important;
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.9), 0 0 35px currentColor !important;
+    z-index: 10;
 }
 
 @keyframes twinkle {
