@@ -39,7 +39,6 @@ function initApp() {
     // Render stars
     //It generates maps of stars and constellations based on the user's recorded emotions in the past
     renderStarChart();
-    
     // Display history
     renderMoodHistory();
     //Generate emotional insights
@@ -132,7 +131,7 @@ function generateEmotionButtons() {
 
         // Mobile style
         //For mobile phones, i gave the buttons a more compact style (to bring the emoji closer to the text). If it's a computer, use the normal layout.
-        if (isMobile) { 
+        if (isSmallMobile) { 
             // mobile size
             button.innerHTML = `<span>${emotion.emoji}</span><span class="emotion-name">${emotion.name}</span>`;
             
@@ -191,6 +190,7 @@ function generateEmotionButtons() {
             
             // Update selected emotion
             selectedEmotion = emotion;
+        });
             //animation about the mouse hover
             button.addEventListener('mouseover', () => {
                 if (!button.classList.contains('selected')) {
@@ -204,7 +204,6 @@ function generateEmotionButtons() {
                     button.style.backgroundColor = `${emotion.color}15`;
                     button.style.boxShadow = 'none'; 
                 }
-            });
         });
         
         emotionsContainer.appendChild(button);
@@ -929,7 +928,7 @@ function handleResize() {
         generateEmotionButtons();
         // Redraw stars
         renderStarChart();
-
+    }
         //mobile size style
         if (isSmallMobile && !wasSmallMobile) {
             document.body.classList.add('small-mobile-view');
@@ -1179,5 +1178,27 @@ function handleResize() {
     // Make initAnimation function globally accessible
     window.initAnimation = initAnimation;
     
-    })
-};
+})();
+
+// Add scrolling function to the mobile size
+function enableMobileScrolling() {
+    document.body.style.height = 'auto';
+    document.body.style.overflowY = 'auto';
+    
+    const pages = document.querySelectorAll('.page');
+    pages.forEach(page => {
+        page.style.overflowY = 'auto';
+        page.style.WebkitOverflowScrolling = 'touch';
+        page.addEventListener('touchstart', function(e) {
+        }, { passive: true }); 
+    });
+    const historyList = document.getElementById('history-entries');
+    if (historyList) {
+        historyList.style.overflowY = 'auto';
+        historyList.style.WebkitOverflowScrolling = 'touch';
+    }
+    const allButtons = document.querySelectorAll('button, .nav-link, .mood-button, .delete-entry');
+    allButtons.forEach(button => {
+        button.style.minHeight = '44px';
+    });
+}
