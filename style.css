@@ -176,12 +176,42 @@ header p {
 }
 
 .mood-button:hover {
+    transform: translateY(-3px);
     background-color: rgba(52, 152, 219, 0.2);
 }
 
 .mood-button.selected {
-    background-color: rgba(52, 152, 219, 0.4);
-    border-color: var(--accent-color);
+    transform: translateY(-3px);
+}
+
+.mood-joy {
+    border-color: var(--joy-color);
+}
+
+.mood-sadness {
+    border-color: var(--sadness-color);
+}
+
+.mood-anger {
+    border-color: var(--anger-color);
+}
+
+.mood-fear {
+    border-color: var(--fear-color);
+}
+
+.mood-surprise {
+    border-color: var(--surprise-color);
+}
+
+.mood-love {
+    border-color: var(--love-color);
+}
+
+.mood-button span {
+    font-size: 1.8rem;
+    display: block;
+    margin-bottom: 8px;
 }
 
 /* Visualization section */
