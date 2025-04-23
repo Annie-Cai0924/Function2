@@ -336,14 +336,15 @@ header p {
 }
 
 .mood-indicator {
-    width: 24px;
-    height: 24px;
+    width: 30px;
+    height: 30px;
     display: flex;
     align-items: center;
     justify-content: center;
     margin-right: 10px;
     font-size: 16px;
     border-radius: 50%;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
 }
 
 .delete-entry {
@@ -360,14 +361,16 @@ header p {
 
 .delete-entry:hover {
     opacity: 1;
+    transform: scale(1.1);
 }
 
 .feedback-container {
-    background-color: rgba(1, 11, 33, 0.7);
-    border-radius: 8px;
-    padding: 20px;
+    background-color: rgba(15, 23, 42, 0.7);
+    border-radius: 15px;
+    padding: 30px;
     border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
 }
 
 #mood-insights {
